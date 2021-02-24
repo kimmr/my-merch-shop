@@ -1,0 +1,35 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+    <%- include('includes/navigation.ejs') %>
+
+    <main>
+        <% if (prods.length > 0) { %>
+            <div class="grid">
+                <% for (let product of prods) { %>
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title"><%= product.title %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="https://static.wikia.nocookie.net/cookierun/images/4/48/3D_Bravery.png/revision/latest?cb=20200401002133"
+                                alt="Gingerbrave cookie">
+                        </div>
+                        <div class="card__content">
+                            <h3 class="product__price">$9.99</h3>
+                            <p class="product__description">Not just an ordinary cookie. He can Jump, Double Jump, and Slide too! Level Up will increase his Energy.</p>
+                        </div>
+                        <div class="card__actions">
+                            <button class="btn btn-outline-warning">Add to Cart</button>
+                        </div>
+                    </article>
+                <% } %>
+            </div>
+        <% } else { %>
+            <h1>No Products Found!</h1>
+        <% } %>
+    </main>
+<%- include('includes/end.ejs') %>
