@@ -1,0 +1,19 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+<main class="form-center">
+    <h1><%= product.title %></h1>
+    <hr>
+    <div>
+        <img src="<%= product.imgURL %>" alt="<%= product.title %>">
+    </div>
+    <h2><%= product.price %></h2>
+    <p><%= product.desc %></p>
+    <%- include('../includes/add-to-cart.ejs') %>
+</main>
+
+<%- include('../includes/end.ejs') %>
