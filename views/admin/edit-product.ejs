@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <form class="product-form" action="/admin/<% if(editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<% if(editing) { %><%=product.title%><%}%> ">
+            </div>
+            <div class="form-control">
+                <label for="imgURL">Image URL</label>
+                <input type="text" name="imgURL" id="imgURL" value="<% if(editing) { %><%=product.imgURL%><%}%> ">
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input type="text" name="price" id="price" value="<% if(editing) { %><%=product.price%><%}%> ">
+            </div>
+            <div class="form-control">
+                <label for="desc">Description</label>
+                <textarea name="desc" id="desc" rows=5><% if(editing) { %><%=product.desc%><%}%></textarea>
+            </div>
+            <!-- Passing name="productId" to POST edit-product depending on whether this is on editing mode or not -->
+            <% if (editing) { %>
+                <input type="hidden" value="<%= product.id %>" name="productId">
+            <% } %>
+            <div class="form-center">
+                    <% if (editing) { %>
+                    <button class="btn btn-outline-success" type="submit">Edit
+                    <% } else { %>
+                    <button class="btn btn-outline-primary" type="submit">Add Product
+                    <% } %>
+                    </button>
+            </div>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

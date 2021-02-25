@@ -12,7 +12,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public'))); // css file
+app.use(express.static(path.join(__dirname, 'public'))); // to load css file
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
