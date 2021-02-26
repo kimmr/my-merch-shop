@@ -5,7 +5,7 @@
 * [Setup](#setup)
 
 ## General info
-A small shopping website where I can add, post, edit, delete items. 
+A shopping website where I can add, post, edit, delete items. 
 	
 ## Technologies
 Project is created with:
