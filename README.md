@@ -11,8 +11,8 @@ A shopping website where I can add, post, edit, delete items.
 Project is created with:
 * Node.js
 * Express.js
-* mySQL (in progress)
-* MongoDB with mongoose (to be implemented)
+* mySQL (in progress) in "mySQL" branch
+* MongoDB with mongoose (to be implemented) in "MongoDB" branch
 * Javascript
 * HTML/CSS/Bootstrap
 	
