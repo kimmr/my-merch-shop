@@ -49,6 +49,11 @@ module.exports = class cart {
         }
       const updatedCart = { ...JSON.parse(fileContent) };
       const product = updatedCart.products.find(prod => prod.id === id);
+      // if there is no product in the cart
+      if(!product) {
+        return
+      }
+      
       const productQty = product.qty;
       updatedCart.products = updatedCart.products.filter(
         prod => prod.id !== id
@@ -61,4 +66,14 @@ module.exports = class cart {
       });
     }
 
+    static getCart(cb) {
+      fs.readFile(p, (err, fileContent) => {
+        const cart = JSON.parse(fileContent);
+        if(err){
+          cb(null); // if cart is empty, return null
+        } else {
+          cb(cart);
+        }
+    });
+  }
 }
