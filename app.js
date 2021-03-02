@@ -6,6 +6,8 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
+const db = require('./helpers/database');
+
 const app = express();
 
 app.set('view engine', 'ejs');
