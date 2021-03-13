@@ -12,7 +12,7 @@ Project is created with:
 * Node.js
 * Express.js
 * mySQL with Sequelize in "mySQL" branch
-* MongoDB with mongoose in "MongoDB" branch
+* MongoDB with mongoose in "master" branch
 * Javascript
 * HTML/CSS/Bootstrap
 	
