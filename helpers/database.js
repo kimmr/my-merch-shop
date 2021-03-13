@@ -1,22 +1,35 @@
-/*
-const mysql = require('mysql2');
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'my_merch',
-    password: 'rootroot'
-});
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
 
-module.exports = pool.promise();
-*/
+let _db; // used only internally
 
-const Sequelize = require('sequelize');
+const mongoConnect = (callback) => {
+  MongoClient.connect(
+      "mongodb+srv://megan:vZimbEMh661Xyws3@cluster0.plwjh.mongodb.net/myMerch?retryWrites=true&w=majority"
+    )
+    .then(client => {
+      console.log('MongoDB connected');
+      // Storing connection to the database
+      _db = client.db()
+      callback();
+    })
+    .catch(err => {
+      console.log('Error from connecting Database', err);
+      throw err;
+    });
+};
 
-const sequelize = new Sequelize('my_merch', 'root', 'rootroot', {
-    dialect: 'mysql', 
-    host: 'localhost'
-});
+// Return access to the database
+// This allows access to the database from anywhere when we call it
+const getDb = () => {
+  if (_db) {
+    return _db; 
+  } else {
+    throw 'No Database Found';
+  }
+};
 
-module.exports = sequelize;
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
 
 

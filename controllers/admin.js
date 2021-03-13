@@ -13,16 +13,12 @@ exports.postAddProduct = (req, res, next) => {
   const imgURL = req.body.imgURL;
   const price = req.body.price;
   const desc = req.body.desc;
-  // Using Association in app.js, we are able to use this query
-  req.user
-    .createProduct({
-      title: title,
-      price: price,
-      imgURL: imgURL,
-      desc: desc,
-    })
+
+  const product = new Product(title, price, desc, imgURL);
+  product
+    .save()
     .then((result) => {
-      console.log("Successfully created", title);
+      console.log("Successfully created ${title}");
       res.redirect("/admin/products");
     })
     .catch((err) => {
@@ -30,7 +26,7 @@ exports.postAddProduct = (req, res, next) => {
     });
 };
 
-exports.getEditProduct = (req, res, next) => {
+/* exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -51,7 +47,7 @@ exports.getEditProduct = (req, res, next) => {
     .catch((err) => {
       console.log("Error from getEditProduct", err);
     });
-};
+}; */
 
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
@@ -78,8 +74,8 @@ exports.postEditProduct = (req, res, next) => {
 
 // Getting products for the user
 exports.getProducts = (req, res, next) => {
-  req.user
-    .getProducts()
+  Product
+    .fetchAll()
     .then((products) => {
       res.render("admin/products", {
         prods: products,
