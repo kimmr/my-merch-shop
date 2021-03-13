@@ -1,4 +1,7 @@
 const Product = require("../models/product");
+const mongodb = require("mongodb");
+
+const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -26,13 +29,14 @@ exports.postAddProduct = (req, res, next) => {
     });
 };
 
-/* exports.getEditProduct = (req, res, next) => {
+// Fetch and edit a product
+exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
   const productId = req.params.productId;
-  Product.findByPk(productId)
+  Product.findById(productId)
     .then((product) => {
       if (!product) {
         return res.redirect("/");
@@ -47,22 +51,25 @@ exports.postAddProduct = (req, res, next) => {
     .catch((err) => {
       console.log("Error from getEditProduct", err);
     });
-}; */
+};
 
+// Save changes to the database
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedImgURL = req.body.imgURL;
   const updatedDesc = req.body.desc;
-  Product.findByPk(prodId)
-    .then((product) => {
-      (product.title = updatedTitle),
-        (product.price = updatedPrice),
-        (product.imgURL = updatedImgURL),
-        (product.desc = updatedDesc);
-      return product.save();
-    })
+
+  const product = new Product(
+    updatedTitle,
+    updatedPrice,
+    updatedDesc,
+    updatedImgURL,
+    new ObjectId(prodId)
+  );
+  product
+    .save()
     .then((result) => {
       console.log("Updated:", updatedTitle);
       res.redirect("/admin/products");
@@ -74,8 +81,7 @@ exports.postEditProduct = (req, res, next) => {
 
 // Getting products for the user
 exports.getProducts = (req, res, next) => {
-  Product
-    .fetchAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("admin/products", {
         prods: products,

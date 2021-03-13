@@ -27,7 +27,7 @@
             </div>
             <!-- Passing name="productId" to POST edit-product depending on whether this is on editing mode or not -->
             <% if (editing) { %>
-                <input type="hidden" value="<%= product.id %>" name="productId">
+                <input type="hidden" value="<%= product._id %>" name="productId">
             <% } %>
             <div class="form-center">
                     <% if (editing) { %>
