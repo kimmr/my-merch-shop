@@ -8,6 +8,7 @@ const shopRoutes = require("./routes/shop");
 const errorController = require("./controllers/error");
 
 const mongoConnect = require("./helpers/database").mongoConnect;
+const User = require('./models/user');
 
 const app = express();
 
@@ -17,8 +18,16 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public"))); // to load css file
 
+// Temporary user authentication
 app.use((req, res, next) => {
-  next();
+  User.findById('604d172c72c643fc2a7f058d')
+    .then(user => {
+      req.user = new User(user.name, user.email, user.cart, user._id);
+      next();
+    })
+    .catch(err => {
+      console.log(err);
+    })
 });
 
 app.use("/admin", adminRoutes);
