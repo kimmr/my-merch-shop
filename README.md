@@ -12,7 +12,7 @@ Project is created with:
 * Node.js
 * Express.js
 * mySQL (in progress) in "mySQL" branch
-* MongoDB with mongoose (to be implemented) in "MongoDB" branch
+* MongoDB with mongoose in "master" branch
 * Javascript
 * HTML/CSS/Bootstrap
 	
@@ -20,6 +20,6 @@ Project is created with:
 To run this project, install it locally using npm:
 
 ```
-$ npm install express body-parser ejs
+$ npm install express body-parser ejs mongoose
 $ npm start
 ```
