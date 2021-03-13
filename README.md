@@ -21,6 +21,6 @@ To run this project, install it locally using npm:
 
 ```
 <<<<<<< HEAD
-$ npm install express body-parser ejs mongoose sequelize
+$ npm install --save express body-parser ejs mongodb mongoose sequelize
 $ npm start
 ```
