@@ -1,14 +1,14 @@
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 const errorController = require("./controllers/error");
 
-const mongoConnect = require("./helpers/database").mongoConnect;
-const User = require('./models/user');
+const User = require("./models/user");
 
 const app = express();
 
@@ -20,14 +20,14 @@ app.use(express.static(path.join(__dirname, "public"))); // to load css file
 
 // Temporary user authentication
 app.use((req, res, next) => {
-  User.findById('604d172c72c643fc2a7f058d')
-    .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
+  User.findById("605782705714c30e46d817d6")
+    .then((user) => {
+      req.user = user;
       next();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-    })
+    });
 });
 
 app.use("/admin", adminRoutes);
@@ -35,6 +35,24 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+mongoose
+  .connect(
+    "mongodb+srv://megan:vZimbEMh661Xyws3@cluster0.plwjh.mongodb.net/myMerch?retryWrites=true&w=majority"
+  )
+  .then((result) => {
+    // Temp user
+    User.findOne().then(user => {
+      if(!user) {
+        const user = new User({
+          name: 'Megan',
+          email: 'megan@meg.com',
+          items: []
+        });
+        user.save();
+      }
+    });
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log("Error connecting DB", err);
+  });
