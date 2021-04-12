@@ -1,6 +1,4 @@
 <%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/css/product.css">
-    <link rel="stylesheet" href="/css/forms.css">
 </head>
 
 <body>
@@ -22,9 +20,11 @@
                             <h3 class="product__price">$<%= product.price %></h3>
                             <p class="product__description"><%= product.desc %></p>
                         </div>
+                        <% if(isAuthenticated) { %>
                         <div class="form-center">
                             <%- include('../includes/add-to-cart.ejs', {product:product}) %>
                         </div>
+                        <% } %>
                     </article>
                 <% } %>
             </div>

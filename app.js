@@ -1,58 +1,69 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const path = require('path');
 
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const session = require('express-session'); // sets cookie
+const MongoDBStore = require('connect-mongodb-session')(session);
 
-const errorController = require("./controllers/error");
+const errorController = require('./controllers/error');
 
-const User = require("./models/user");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
+
+
+const User = require('./models/user');
+
+const MONGODB_URI =
+  'mongodb+srv://megan:vZimbEMh661Xyws3@cluster0.plwjh.mongodb.net/myMerch';
 
 const app = express();
 
-app.set("view engine", "ejs");
-app.set("views", "views");
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public"))); // to load css file
-
-// Temporary user authentication
-app.use((req, res, next) => {
-  User.findById("605782705714c30e46d817d6")
-    .then((user) => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions',
 });
 
-app.use("/admin", adminRoutes);
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public'))); // to load css file
+app.use(
+  session({
+    secret: 'secret values',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+  .then((user) => {
+    req.user = user;
+    next();
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.get404);
 
 mongoose
-  .connect(
-    "mongodb+srv://megan:vZimbEMh661Xyws3@cluster0.plwjh.mongodb.net/myMerch?retryWrites=true&w=majority"
-  )
+  .connect(MONGODB_URI)
   .then((result) => {
-    // Temp user
-    User.findOne().then(user => {
-      if(!user) {
-        const user = new User({
-          name: 'Megan',
-          email: 'megan@meg.com',
-          items: []
-        });
-        user.save();
-      }
-    });
     app.listen(3000);
   })
   .catch((err) => {
-    console.log("Error connecting DB", err);
+    console.log('Error connecting DB', err);
   });
