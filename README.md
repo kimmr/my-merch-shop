@@ -5,7 +5,8 @@
 * [Setup](#setup)
 
 ## General info
-A shopping website where I can add, post, edit, delete items. 
+A shopping website where an user can add, post, edit, delete items.
+User can create an account in order to post or buy products.
 	
 ## Technologies
 Project is created with:
